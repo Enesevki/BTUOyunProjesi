@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Laser : MonoBehaviour
+{
+    [SerializeField] private int laserSpeed = 5;
+
+    void Update()
+    {
+        laserMove();
+        destroyLaser();
+    }
+
+    private void laserMove()
+    {
+       transform.position = new Vector3(transform.position.x,transform.position.y+1 * laserSpeed *Time.deltaTime,transform.position.z);
+    }
+
+    private void destroyLaser()
+    {
+        if(transform.position.y > 7)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+}
