@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    
     [SerializeField] private int speed = 5;
     [SerializeField] GameObject laserPrefab;
+    [SerializeField] GameObject spawnManager;
 
     [SerializeField] private float fireRate = 0.15f;
     private float nextFire = 0f;
-    [SerializeField] private int health = 5;
-    
-
+    [SerializeField] private int health = 5; 
     void Update()
     {
         move();
@@ -43,15 +43,17 @@ public class Movement : MonoBehaviour
 
     public void getDamage()
     {
+        health--;
         if (health > 0)
-            health--;
-
+        {
+            ;
+        }
         else
-            Destroy(this);
-        
+        {
+            spawnManager.GetComponent<SpawnManager>().spawnEnemy = false;
+            Destroy(this.gameObject);   
+        }
     }
 
-}
-
-
+   
 }
