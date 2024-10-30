@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpawnManager : MonoBehaviour
+{
+    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject container;
+    [SerializeField] GameObject player;
+    public bool spawnEnemy = true;
+
+    
+    private void Start()
+    {
+        StartCoroutine(SpawnEnemy());
+       
+    }
+    IEnumerator SpawnEnemy()
+    {
+        
+        while (spawnEnemy)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(-9f, +9f), 10, 0);
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            enemy.transform.parent = container.transform;
+            yield return new WaitForSeconds(5.0f);
+        }
+
+    }
+}
