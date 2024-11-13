@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+public class Bonus : MonoBehaviour
+{
+    [SerializeField] private int speed;
+    
+    private void Update()
+    {
+        bonusMovement();
+    }
+    private void bonusMovement()
+    {
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
+
+        if (transform.position.y < -5f)
+        {
+            Destroy(this.gameObject);
+        }
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+
+            Player player_sc = collision.transform.GetComponent<Player>();
+            if (player_sc != null)
+            {
+
+                player_sc.activateTripleShot();
+            }
+
+            Destroy(this.gameObject);
+        }
+    }
+}
+
+
