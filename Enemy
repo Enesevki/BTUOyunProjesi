@@ -7,9 +7,41 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float speed = 3.0f;
     [SerializeField] GameObject enemy;
+    Animator anim;
+    Player player_sc;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            Player player = collision.transform.GetComponent<Player>();
+            player.getDamage();
+            anim.SetTrigger("onEnemyDeath");
+            speed = 0;
+            Destroy(this.gameObject, 2.3f);
 
+        }
+        else if (collision.tag == "Laser")
+        {
 
+            Destroy(collision.gameObject);
+            if (player_sc != null)
+            {
+                player_sc.UpdateScore(10);
+            }
+            anim.SetTrigger("onEnemyDeath");
+            speed = 0;
+            Destroy(this.gameObject, 2.3f);
+        }
+    }
+    private void Start()
+    {
+        player_sc = GameObject.Find("Player").GetComponent<Player>();  
+        
+        anim = GetComponent<Animator>();
+        if (anim == null)
+            Debug.LogError("anim is null");
+    }
     void Update()
     {
         calculateMovement();
@@ -26,24 +58,5 @@ public class Enemy : MonoBehaviour
         }
 
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            Movement player = collision.transform.GetComponent<Movement>();
-            player.getDamage();
-            Destroy(this.gameObject);
-        }
-        else if (collision.tag == "Laser")
-        {
-            Destroy(collision.gameObject);
-            Destroy(this.gameObject);
-        }
-    }
-   
-
-
-
 
 }
