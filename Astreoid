@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class Astreoid : MonoBehaviour
+{
+    [SerializeField] int movSpeed;
+    [SerializeField] int rotSpeed;
+
+    [SerializeField] GameObject explosionPrefab;
+
+    SpawnManager spawnManager;
+    void Start()
+    {
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
+         
+    }
+
+   
+    void Update()
+    {
+        transform.Rotate(Vector3.forward, rotSpeed * Time.deltaTime);
+        transform.position += new Vector3(0, -1, 0)*Time.deltaTime*movSpeed;       
+
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Laser")
+        {
+            Instantiate(explosionPrefab,transform.position,Quaternion.identity);
+            Destroy(collision.gameObject);
+            spawnManager.StartSpawning();
+            Destroy(this.gameObject);
+        }
+    }
+}
