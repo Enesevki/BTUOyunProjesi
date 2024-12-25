@@ -1,12 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class Bonus : MonoBehaviour
 {
+    [SerializeField] private int powerupID; // powerupID == 0 -> tripleShot, == 1 -> speedBoost
     [SerializeField] private int speed;
-    
+    [SerializeField] private AudioClip audioClip;
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {    
+            Player player = collision.transform.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(audioClip,transform.position);
+            if (player != null)
+            {
+                switch (powerupID)
+                {
+                    case 0:
+                        player.ActivateTripleShot(); 
+                        break;
+                    case 1:
+                        player.ActivateSpeedBonus();
+                        break;
+                    default:
+                        Debug.Log("geçerli bir powerupID yok");
+                        break;
+                }
+            }
+            
+            Destroy(this.gameObject);
+        }
+    }
+
+
     private void Update()
     {
         bonusMovement();
@@ -21,21 +50,7 @@ public class Bonus : MonoBehaviour
         }
 
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-
-            Player player_sc = collision.transform.GetComponent<Player>();
-            if (player_sc != null)
-            {
-
-                player_sc.activateTripleShot();
-            }
-
-            Destroy(this.gameObject);
-        }
-    }
+   
 }
 
 
